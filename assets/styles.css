@@ -1,0 +1,27 @@
+#rsi_meter_chart > .js-plotly-plot > .plot-container > .svg-container{
+    height: 250px !important;
+}
+
+#line_white {
+    background-color: white;
+    color:black !important;
+}
+
+#line_green {
+    background-color: green;
+    color:white !important;
+}
+
+#line_yellow {
+    background-color: yellow;
+    color:black !important;
+}
+
+#line_blue {
+    background-color: blue;
+    color:white !important;
+}
+
+#line_equal {
+    color:black !important;
+}
