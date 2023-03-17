@@ -1,23 +1,29 @@
 import pandas as pd
 from dash import html, dash_table
 from collections import OrderedDict
+import config
+from helpers.dbconnect import *
 
 style_title_op = {
     "backgroundColor":'yellow',
     "color":"black",
 }
 
-data = OrderedDict([("Data", ["Sin Ordenes abiertas"])])
+data = OrderedDict([("Data", ["Sin Operaciones Pendientes"])])
 df_sin_info = pd.DataFrame(data)
 
-def ListOrdersOpen(orders):
-    if len(orders) > 0:
-        df = pd.DataFrame(orders)
-        df.drop(['orderListId','clientOrderId','timeInForce','icebergQty','updateTime','isWorking','workingTime','selfTradePreventionMode','origQuoteOrderQty','cummulativeQuoteQty','executedQty','stopPrice'], axis = 'columns', inplace=True)
-        df = df[['orderId','symbol','type','side','price','origQty','time']]
-        df['price'] = df['price'].apply(lambda x: '{:.2f}'.format(float(x)))
-        df.time = pd.to_datetime(df.time, unit='ms').dt.strftime("%Y-%m-%d %H:%M:%S")
-        df = df.rename(columns={'price':'Precio','origQty':'Cantidad','time':'Fecha','symbol':'Simbolo','type':'Tipo','side':'Accion'})
+def ListOperationsPendding():
+    db = Conexion()
+    cnx = db.mysqlConnect()
+    sql = "SELECT orderId,symbol,open,usdt_open,quantity,date_time_open FROM spot_trading_open WHERE status = '{}' AND symbol = '{}'".format('O',config.TRADESYMBOL)
+    r1=db.prepare(sql,cnx)
+    if r1:
+        df = pd.DataFrame(r1)
+        #df.drop(['id_entry_point'], axis = 'columns', inplace=True)
+        # df = df[['orderId','symbol','type','side','price','origQty','time']]
+        # df['price'] = df['price'].apply(lambda x: '{:.2f}'.format(float(x)))
+        # df.time = pd.to_datetime(df.time, unit='ms').dt.strftime("%Y-%m-%d %H:%M:%S")
+        # df = df.rename(columns={'price':'Precio','origQty':'Cantidad','time':'Fecha','symbol':'Simbolo','type':'Tipo','side':'Accion'})
         table_layout = dash_table.DataTable(
                                     df.to_dict('records'), 
                                     [{"name": i, "id": i} for i in df.columns],
@@ -46,11 +52,11 @@ def ListOrdersOpen(orders):
         )
 
     return [html.Div(
-                id='list_orders_open', 
+                id='list_operations', 
                 children=[
-                    html.Div(   id='title-open-orders',
+                    html.Div(   id='title-operation_pendding',
                                 children=[
-                                    html.Label("Ordenes Abiertas"),
+                                    html.Label("Operaciones Pendientes"),
                                 ],
                                 style=style_title_op),
                     html.Div(   table_layout,style={'height':"100%"})

@@ -1,6 +1,14 @@
 import json
 import pandas as pd
 import config
+from datetime import datetime
+import time
+import requests
+import telegram
+from decimal import Decimal
+from typing import Union, Optional, Dict
+
+from telegram.constants import ParseMode
 
 def save_info_trade(data):
     with open('./assets/operations.json', 'w') as file:
@@ -48,8 +56,9 @@ def calculate_sma_average(closes, periodos):
 def calculate_ema_average(closes, n=14):
     ema = []
     ema.append(calculate_sma_average(closes, n))
+    #ema.append(closes[0])  # Usar el precio de cierre del período anterior como valor inicial
     k = 2 / (n + 1)
-    k = float('{:.2f}'.format(k))
+    #k = float('{:.2f}'.format(k))
     for i in range(1, len(closes)):
         ema.append((closes[i] * k) + (ema[i-1] * (1 - k)))
     ema_local = ema.pop()
@@ -86,3 +95,15 @@ def GetBalanceAsset(_balance, trend):
             return float(data['free'])
         if(data['asset'] == config.QUOTE_ASSET and trend == 'alza'):
             return float(data['free'])
+
+
+async def SendNotificationTelegram(msg):
+    seconds = time.time() + 60
+    date = datetime.fromtimestamp(seconds)
+    bot = telegram.Bot(config.TELEGRAM_API)
+    await bot.send_message(chat_id='@botsiachannel', text = msg,  parse_mode=ParseMode.HTML)
+
+def round_step_size(quantity: Union[float, Decimal], step_size: Union[float, Decimal]) -> float:
+    quantity = Decimal(str(quantity))
+    valor_valido =float(quantity - quantity % Decimal(str(step_size)))
+    return valor_valido

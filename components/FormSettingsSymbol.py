@@ -5,6 +5,7 @@ from dash.dependencies import Input, Output, State
 import pandas as pd
 import config
 import datetime
+import asyncio
 
 from helpers.functions import *
 from helpers.dbconnect import *
@@ -88,6 +89,7 @@ def update_output(*args):
 
             db.ejecutar()
             db.mysqlClose() 
+            asyncio.run(SendNotificationTelegram("Datos de configuracion actualizados correctamente!"))
             return dbc.Alert("Datos guardados con éxito!", color="success", duration=5000)
         except Exception as e:
             return dbc.Alert(e, color="danger", duration=5000)
@@ -98,7 +100,7 @@ def update_output(*args):
         Input(component_id='submit-button-symbols', component_property='n_clicks')
     )
 def display_confirm(n_clicks):
-    print(n_clicks)
+    #print(n_clicks)
     if n_clicks:
         return True
     return False
@@ -107,7 +109,7 @@ def getDataGeneral():
     db = Conexion()
     cnx = db.mysqlConnect()
     r1=db.prepare("SELECT * FROM settingsymbols WHERE 1", cnx)
-    print(r1)
+    #print(r1)
     dat = {}
     if r1:
         dat = r1[0]

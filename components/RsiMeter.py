@@ -78,6 +78,13 @@ def generate_gauge(rsi_value):
             },
         }
     ))
+    gauge.update_layout(
+        width=200,  # Ancho en píxeles
+        height=120,  # Altura en píxeles
+        margin=dict(l=30, r=30, t=25, b=30),  # Configura los márgenes para reducir el espacio en blanco
+    )
+    gauge.update_layout(paper_bgcolor='#161A1E', font_color='white')
+    gauge.update_traces(number_font_color=color)
     return gauge
 
 def GraphRsiMeter(klines_df, config_rsi):

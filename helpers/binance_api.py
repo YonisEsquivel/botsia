@@ -23,7 +23,8 @@ class UrlParamsBuilder(object):
             if isinstance(value, list):
                 self.param_map[name] = json.dumps(value)
             elif isinstance(value, float):
-                self.param_map[name] = ('%.20f' % (value))[slice(0, 16)].rstrip('0').rstrip('.')
+                #self.param_map[name] = ('%.20f' % (value))[slice(0, 16)].rstrip('0').rstrip('.')
+                self.param_map[name] = ('%.8f' % (value)).rstrip('0').rstrip('.')
             else:
                 self.param_map[name] = str(value)
     
@@ -68,6 +69,7 @@ class BinanceApiClient():
         request.header.update({'Content-Type': 'application/json'})
         request.url = endpoint + "?" + builder.build_url()
         return request
+        
 
     def _create_request_with_signature(self, method, endpoint, params):
         builder = self.builderRequest(params)
@@ -77,11 +79,10 @@ class BinanceApiClient():
         request.header.update({"Content-Type": "application/x-www-form-urlencoded"})
         request.header.update({"X-MBX-APIKEY": self._api_key})
         self.create_signature(self._secret_key, builder)
-
         request.url = endpoint + "?" + builder.build_url()
+        #print(request.url)
         return request
-
-
+    
     def __create_request_with_apikey(self, url, builder):
         request = RestApiRequest()
         request.method = "GET"
@@ -98,22 +99,40 @@ class BinanceApiClient():
     
         
     def _call_sync(self, request):
-        resp = {}
-        if request.method == "GET":
-            response = requests.get(request.host + request.url, headers = request.header)
-            resp['data'] =  response.json()
-        elif request.method == "POST":
-            pass
-        elif request.method == "DELETE":
-            pass
-        elif request.method == "PUT":
-            pass
+        try:
+            resp = {}
+            if request.method == "GET":
+                #print(request.host + request.url)
+                response = requests.get(request.host + request.url, headers = request.header)
+                #print(response)
+                resp['data'] =  response.json()
 
-        return resp
+            elif request.method == "POST":
+                print(request.host + request.url)
+                response = requests.post(request.host + request.url, headers=request.header)
+                resp['data'] =  response.json()
+
+            elif request.method == "DELETE":
+                response = requests.delete(request.host + request.url, headers=request.header)
+                
+            elif request.method == "PUT":
+                response = requests.put(request.host + request.url, headers=request.header)
+                
+            if resp is not None and resp['data'] is None:
+                resp = {'data' :[]}
+
+            return resp
+        except requests.exceptions.ConnectionError:
+            print("No se pudo conectar al servidor. Intentando nuevamente en 5 segundos...")
+            time.sleep(5)
+            self._call_sync(request)
+            
 
     def get_servertime(self) -> any:
         request = self._create_request('GET', '/time', None)
         response = self._call_sync(request)
+        if response is None or response['data'] is None:
+            response = {'data':[]}
         return response['data']
 
     def get_current_timestamp(self):
@@ -141,46 +160,156 @@ class BinanceApiClient():
     def get_price_symbol(self, symbol) -> any:
         request = self._create_request('GET', '/ticker/price', {"symbol":symbol})
         response = self._call_sync(request)
+        if response is None or response['data'] is None:
+            response = {'data':[]}
         return response['data']
-
+    
     def get_book_ticker(self, symbol) -> any:
         request = self._create_request('GET', '/ticker/bookTicker', {"symbol":symbol})
         response = self._call_sync(request)
+        if response is None or response['data'] is None:
+            response = {'data':[]}
         return response['data']
 
     def get_klines_data(self, symbol, interval, limit) -> any:
         request = self._create_request('GET', '/klines', {"symbol":symbol, "interval": interval, "limit": limit})
         response = self._call_sync(request)
+        if response is None or response['data'] is None:
+            response = {'data':[]}
+
         return self.json_parse(response['data'])
 
     def get_balance(self) -> any:
         timestamp = str(self.get_current_timestamp() - 1000)
         request = self._create_request_with_signature('GET', '/balance', {"recvWindow":6000, "timestamp": timestamp})
         response = self._call_sync(request)
+        if response is None or response['data'] is None:
+            response = {'data':[]}
         return response['data']
     
     def get_balance_account(self) -> any:
         timestamp = str(self.get_current_timestamp() - 1000)
         request = self._create_request_with_signature('GET', '/account', {"recvWindow":6000, "timestamp": timestamp})
         response = self._call_sync(request)
+        if response is None or response['data'] is None:
+            response = {'data':{'balances':[]}}
         return response['data']['balances']
 
     def get_open_orders(self, symbol) -> any:
         timestamp = str(self.get_current_timestamp() - 1000)
         request = self._create_request_with_signature('GET', '/openOrders', {"symbol":symbol, "recvWindow":6000, "timestamp": timestamp})
         response = self._call_sync(request)
+        if response is None or response['data'] is None:
+            response = {'data':[]}
         return response['data']
 
     def get_order_book(self, symbol, interval, depth):
         request = self._create_request('GET', '/depth', {"symbol":symbol, "interval": interval, "limit": depth})
         response = self._call_sync(request)
+        if response is None or response['data'] is None:
+            response = {'data':[]}
         return response['data']
 
     def get_position_risk(self, symbol) -> any:
         timestamp = str(self.get_current_timestamp() - 1000)
         request = self._create_request_with_signature('GET', '/positionRisk', {"symbol":symbol, "recvWindow":6000, "timestamp": timestamp})
         response = self._call_sync(request)
+        if response is None or response['data'] is None:
+            response = {'data':[]}
         return response['data']
+
+    def get_symbol_info(self, symbol):
+        request = self._create_request('GET', '/exchangeInfo', None)
+        response = self._call_sync(request)
+        symbol_info = {}
+        if response is not None or response['data'] is not None:
+            for info in response['data']['symbols']:
+                if info['symbol'] == symbol:
+                    # PRICE_FILTER
+                    price_filter_min_quantity = float(info['filters'][0]['minPrice']) 
+                    price_filter_max_quantity = float(info['filters'][0]['maxPrice']) 
+                    price_filter_tick_size = float(info['filters'][0]['tickSize']) 
+
+                    # LOT_SIZE (para órdenes de mercado y límite) 
+                    lot_size_min_quantity = float(info['filters'][1]['minQty']) 
+                    lot_size_max_quantity = float(info['filters'][1]['maxQty']) 
+                    lot_size_step_size = float(info['filters'][1]['stepSize']) 
+
+                    # MIN NOTIONAL 
+                    min_notional = float(info['filters'][2]['minNotional'])
+
+                    symbol_info = { 'symbol': symbol,
+                                    'price_filter_min_quantity': price_filter_min_quantity, 
+                                    'price_filter_max_quantity': price_filter_max_quantity, 
+                                    'price_filter_tick_size': price_filter_tick_size,
+                                    'lot_size_min_quantity': lot_size_min_quantity,  
+                                    'lot_size_min_quantity': lot_size_min_quantity, 
+                                    'lot_size_max_quantity': lot_size_max_quantity,  
+                                    'lot_size_step_size': lot_size_step_size , 
+                                    'min_notional': min_notional, } 
+            return symbol_info
+        else:
+            return symbol_info
+
+    def create_order_limit(self, symbol, side, quantity, price):
+        timestamp = str(self.get_current_timestamp() - 1000)
+        request_params = {
+            "symbol": symbol,
+            "side": side,
+            "type": "LIMIT",
+            "timeInForce": "GTC",
+            "quantity": quantity,
+            "price": price,
+            "recvWindow":6000, 
+            "timestamp": timestamp
+        }
+        request = self._create_request_with_signature('POST', '/order', request_params)
+        response = self._call_sync(request)
+        return response
+    
+    def create_order_limit_test(self, symbol, side, quantity, price):
+        timestamp = str(self.get_current_timestamp() - 1000)
+        request_params = {
+            "symbol": symbol,
+            "side": side,
+            "type": "LIMIT",
+            "timeInForce": "GTC",
+            "quantity": quantity,
+            "price": price,
+            "recvWindow":6000, 
+            "timestamp": timestamp
+        }
+        return request_params
+    
+    def cancel_order(self, symbol, order_id):
+        request_params = {
+            "symbol": symbol,
+            "orderId": order_id,
+        }
+        request = self._create_request_with_signature('DELETE', '/order', request_params)
+        response = self._call_sync(request)
+        return response['data']
+    
+    def get_order(self, symbol, order_id):
+        request_params = {
+            "symbol": symbol,
+            "orderId": order_id,
+        }
+        request = self._create_request_with_signature('GET', '/order', request_params)
+        response = self._call_sync(request)
+        return response['data']
+    
+    def update_order(self, symbol, order_id, quantity, price):
+        request_params = {
+            "symbol": symbol,
+            "orderId": order_id,
+            "quantity": quantity,
+            "price": price
+        }
+        request = self._create_request_with_signature('PUT', '/order', request_params)
+        response = self._call_sync(request)
+        return response['data']
+    
 
 #ab = BinanceApiClient(config.BINANCE_API_KEY,config.BINANCE_SECRET_KEY)
 
@@ -192,4 +321,6 @@ class BinanceApiClient():
 
 #resp = ab.get_klines_data('BNBUSDT','5m', 1000)
 
+#create una order
+#resp = ab.create_order_limit('BTCUSDT', 'BUY', 0.00042, 24500.00)
 #print(resp)

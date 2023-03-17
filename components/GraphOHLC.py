@@ -4,9 +4,9 @@ import config
 import plotly.graph_objects as go
 from helpers.functions import *
 
-def GraphOHLC(n, klines_df, config_smas, config_emas, periodo_graph, longitud_graph):
+def GraphOHLC(n, klines_df, config_smas, config_emas, periodo_graph, longitud_graph,decimals_price):
     try:        
-        print("render graph " + str(n))
+        #print("render graph " + str(n))
         smas = config_smas[1]['periodos']
         emas = config_emas[1]['periodos']
         df = calculate_smas_list(klines_df, smas)
@@ -24,7 +24,7 @@ def GraphOHLC(n, klines_df, config_smas, config_emas, periodo_graph, longitud_gr
             graph_layout.append(ema)
 
 
-        layout = go.Layout(xaxis=dict(rangeslider=dict(visible=False)),yaxis=dict(title='Price'))
+        layout = go.Layout(xaxis=dict(rangeslider=dict(visible=False)),yaxis=dict(title='Price',tickformat=decimals_price,tickmode='auto',nticks=20))
 
         fig = go.Figure(data=graph_layout,layout=layout)
         
@@ -51,7 +51,6 @@ def GraphOHLC(n, klines_df, config_smas, config_emas, periodo_graph, longitud_gr
             'showline':True,
             'title':'Price',
             'side':'right',
-            'tickformat' : 'd',
             "showspikes": True,
             "spikemode": "across",
             "spikedash": "solid",
@@ -65,7 +64,7 @@ def GraphOHLC(n, klines_df, config_smas, config_emas, periodo_graph, longitud_gr
                 xaxis = xaxis,
                 yaxis = yaxis,
                 title=title,
-                plot_bgcolor="rgb(30, 30, 30)",
+                plot_bgcolor="#161A1E",
                 transition= {
                     'duration': 500,
                     'easing': 'cubic-in-out'
@@ -82,15 +81,18 @@ def GraphOHLC(n, klines_df, config_smas, config_emas, periodo_graph, longitud_gr
                         size=12,
                         color="white"
                     ),
-                    bgcolor="rgb(30, 30, 30)",
-                    bordercolor="white",
+                    bgcolor="#161A1E",
+                    bordercolor="black",
                     borderwidth=1
-                )
+                ),
+                height=472,
+                paper_bgcolor='#161A1E', 
+                font_color='white',
+                margin=dict(l=30, r=30, t=25, b=30)
             )
         fig.update_xaxes(showgrid=False)
         fig.update_yaxes(showgrid=False)
         fig.update_traces(overwrite=True)
-
         return [ dcc.Graph(id='graph_chart', animate=False, figure=fig)]
 
     except Exception as e:

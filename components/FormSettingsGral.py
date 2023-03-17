@@ -5,6 +5,7 @@ from dash.dependencies import Input, Output, State
 import pandas as pd
 import config
 import datetime
+import asyncio
 
 from helpers.functions import *
 from helpers.dbconnect import *
@@ -19,7 +20,7 @@ from helpers.dbconnect import *
         ]
     )
 def update_output(submit_n_clicks, pg, lg, i):
-    print(submit_n_clicks)
+    #print(submit_n_clicks)
     if submit_n_clicks:
         try:
             db = Conexion()
@@ -29,9 +30,11 @@ def update_output(submit_n_clicks, pg, lg, i):
             r1=db.prepare(sql,cnx)
             if not r1:
                 raise Exception("fail update generak settings!")
-
+    
             db.ejecutar()
             db.mysqlClose() 
+            texto = 'Actualizacion de Datos Generales Exitoso.'
+            asyncio.run(SendNotificationTelegram(texto))
 
             return dbc.Alert("Datos guardados con éxito!", color="success", duration=5000)
         except Exception as e:
@@ -43,7 +46,7 @@ def update_output(submit_n_clicks, pg, lg, i):
         Input(component_id='submit-button', component_property='n_clicks')
     )
 def display_confirm(n_clicks):
-    print(n_clicks)
+    #print(n_clicks)
     if n_clicks:
         return True
     return False

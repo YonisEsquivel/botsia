@@ -180,9 +180,9 @@ def on_button_click(*args):
 
     if(len(btn_id) > 0):
         id = btn_id.split("-")[2]
-        print(id)
+        #print(id)
         db_data = get_data_settings(id,'all')[0]
-        print(db_data)
+        #print(db_data)
         for data in db_data:
             if type(db_data[data]) != list:
                 if(data=='id'): data_fields['id'] = db_data[data]

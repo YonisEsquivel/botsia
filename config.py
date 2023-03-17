@@ -4,6 +4,7 @@ URL_TEST_BINANCE = 'https://testnet.binancefuture.com'
 
 BINANCE_API_KEY = ''
 BINANCE_SECRET_KEY = ''
+TELEGRAM_API = ''
 
 BASE_ASSET = "BTC"
 QUOTE_ASSET = "USDT"

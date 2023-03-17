@@ -1,5 +1,51 @@
+#column-right-form{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#rsi_meter_chart > div.js-plotly-plot > div{
+    display: flex;
+    justify-content: center;
+}
+
+#graph-trend > img{
+    padding-bottom: 10px;
+}
+#indicators-active,
+#strategy-cross-line{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction:column;
+}
+
+#indicators-active > #open_orders_indicators, 
+#indicators-active > #balance_asset_indicators, 
+#indicators-active > #exist_last_operations_indicators,
+#indicators-active > #venta_mayor_compra{
+    padding-bottom: 5px;
+    font-size: 0.8rem;
+    text-align: center;
+    margin-bottom: 5px;
+    width: 200px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-Content: space-around;
+    font-weight: bold;
+}
+ 
+.line-strategy{
+    width: 60px;
+    padding:2px;
+    margin: 5px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
 #rsi_meter_chart > .js-plotly-plot > .plot-container > .svg-container{
-    height: 250px !important;
+    height: 120px !important;
 }
 
 #line_white {
@@ -24,4 +70,13 @@
 
 #line_equal {
     color:black !important;
+}
+
+#log-terminal{
+    background-color: black;
+    color: white;
+    font-family: monospace;
+    height: 210px;
+    border: 1px solid white;
+    overflow-y: auto;
 }

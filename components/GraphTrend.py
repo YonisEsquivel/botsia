@@ -8,10 +8,10 @@ def ShowGraphTrend(klines_df, periodo_trend, periodo_momentum):
     _momentum = trend_values[1]
     
     if (diff > 0 and _momentum > 0):
-        layout_trend = html.Img(src='assets/alza.jpg', style={'width': '100%', "height":250})
+        layout_trend = html.Img(src='assets/alza.jpg', style={'width': '100%', "height":70})
     elif (diff < 0 and _momentum < 0):
-        layout_trend = html.Img(src='assets/baja.jpg', style={'width': '100%', "height":250})
+        layout_trend = html.Img(src='assets/baja.jpg', style={'width': '100%', "height":70})
     else:
-        layout_trend = html.Img(src='assets/laterizando.jpg', style={'width': '100%', "height":250})
+        layout_trend = html.Img(src='assets/laterizando.jpg', style={'width': '100%', "height":70})
 
     return [layout_trend]
