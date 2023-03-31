@@ -1,20 +1,20 @@
-## requerimientos de instalacion:
+# Botsia
 
-- virtualenv env
-- env\Scripts\activate.bat
-- pip install requirements.txt
-- set "FLASK_DEBUG=development"
-- cargar la base de datos mysql que esta en la carpeta db.
+Botsia es un bot para operaciones de trading con criptomonedas en Binance. El bot actualmente funciona en modo Spot y está en desarrollo para su uso en modo Futuros.
 
-El Bot está en desarrollo aún. hasta el momento funciona Spot muy bien. basta con editar el archivo config.py
-y establecer los parámetros iniciales.
+## Requerimientos de instalación
+- Crear un entorno virtual con `virtualenv env`
+- Activar el entorno virtual con `env\Scripts\activate.bat`
+- Instalar las dependencias con `pip install requirements.txt`
+- Establecer la variable de entorno `FLASK_DEBUG` en `development`
+- Cargar la base de datos MySQL que se encuentra en la carpeta `db`
 
-Se creo el link de settings para no tener que hacerlo directamente en el código sino que busque la información
-desde la base de datos pero aún no esta conectada, falta esa parte.
+## Uso del Bot
+Para configurar el bot, es necesario editar el archivo `config.py` y establecer los parámetros iniciales. En la sección de Spot el bot funciona muy bien y se puede utilizar sin problemas. Además, se ha creado un link de configuración para no tener que hacer cambios directamente en el código, aunque aún no está conectado a la base de datos.
 
-El apartado de futuros tengo el código aun en desarrollo y apenas pueda lo actualizo pero como hay muchas
-variables que tomar en cuenta se tomará más tiempo.
+La sección de futuros aún está en desarrollo y se irá actualizando conforme se vayan considerando las variables relevantes para su uso.
 
-### Les comparto el código ya que hasta el momento lo he derrollado y lo tengo funcionando dandome buenos resultados pero pienso que podría mejorar con la ayuda de ustedes. Les agradeceria hagan sus aportes al código explicando de forma clara cada linea a una rama aparte de con su identificación.
+## Contribuciones
+Este proyecto es colaborativo y se agradecen las contribuciones al código explicando de forma clara cada línea de código en una rama aparte con su identificación. Juntos podemos mejorar Botsia y obtener mejores resultados en nuestras operaciones de trading.
 
-# Juntos podemos ganar!
+# ¡Juntos podemos ganar!
