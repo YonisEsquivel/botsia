@@ -1,17 +1,28 @@
-Licencia Pública General de GNU Versión 3, 29 de junio de 2007
+                Licencia Pública General de GNU 
+                Versión 3, 29 de junio de 2007
 
-Botsia - Bot para operaciones de trading con criptomonedas, en spot y futuros de forma autmatica en binance.
+ Botsia - Bot para operaciones de trading con criptomonedas, en spot y futuros 
+de forma autmatica en binance.
 
 Copyright (C) 2023 Ing Manuel Ramirez
 
-Este programa es software libre: puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General de GNU, tal como fue publicada por la Free Software Foundation, ya sea la versión 3 de la Licencia, o (a su elección) cualquier versión posterior.
+  Este programa es software libre: puede redistribuirlo y/o modificarlo bajo los 
+términos de la Licencia Pública General de GNU, tal como fue publicada por la Free 
+Software Foundation, ya sea la versión 3 de la Licencia, o (a su elección) cualquier 
+versión posterior.
 
-Este programa se distribuye con la esperanza de que sea útil, pero SIN GARANTÍA ALGUNA; ni siquiera la garantía implícita MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. Consulte los detalles de la Licencia Pública General de GNU para obtener más detalles.
+  Este programa se distribuye con la esperanza de que sea útil, pero SIN GARANTÍA ALGUNA; 
+ni siquiera la garantía implícita MERCANTIL o de APTITUD PARA UN PROPÓSITO DETERMINADO. 
+Consulte los detalles de la Licencia Pública General de GNU para obtener más detalles.
 
-Debería haber recibido una copia de la Licencia Pública General de GNU junto con este programa. Si no, consulte <https://www.gnu.org/licenses/>.
+  Debería haber recibido una copia de la Licencia Pública General de GNU junto con este 
+programa. Si no, consulte <https://www.gnu.org/licenses/>.
 
-Este software también se distribuye con algunas bibliotecas que están cubiertas por la Licencia Pública General Menor de GNU (GNU Lesser General Public License), que puede encontrarse en el archivo COPYING.LESSER incluido con este software.
+  Este software también se distribuye con algunas bibliotecas que están cubiertas por la 
+Licencia Pública General Menor de GNU (GNU Lesser General Public License), que puede 
+encontrarse en el archivo COPYING.LESSER incluido con este software.
 
-El desarrollo de Botsia es colaborativo y se lleva a cabo en el repositorio de Github de Ing Manuel Ramirez (https://github.com/ManuelVR461).
+  El desarrollo de Botsia es colaborativo y se lleva a cabo en el repositorio de Github 
+de Ing Manuel Ramirez (https://github.com/ManuelVR461).
 
 Fecha: 31-03-2023
