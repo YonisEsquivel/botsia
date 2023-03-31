@@ -30,5 +30,3 @@ Para enviar una solicitud de extracción, sigue estos pasos:
 4. Espera a que la solicitud de extracción sea revisada y aprobada antes de fusionar los cambios.
 
 ¡Gracias por tu contribución a [Nombre del proyecto]!```
-
-Recuerda que puedes personalizar el archivo CONTRIBUTING.md según tus necesidades y las reglas que hayas establecido para tu proyecto.
