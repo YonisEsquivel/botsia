@@ -15,8 +15,8 @@ desde la base de datos pero aun no esta conectada, falta esa parte.
 El apartado de futuros tengo el código aun en desarrollo y apenas pueda lo actualizo pero como hay muchas
 variables que tomar en cuenta se tomara mas tiempo.
 
-## Les comparto el código ya que hasta el momento lo he derrollado y lo tengo funcionando dandome buenos resultados
-## pero pienso que podría mejorar con la ayuda de ustedes. Les agradeceria hagan sus aportes al codigo
-## explicando de forma clara cada linea a una rama aparte de con su identificación.
+### Les comparto el código ya que hasta el momento lo he derrollado y lo tengo funcionando dandome buenos resultados
+### pero pienso que podría mejorar con la ayuda de ustedes. Les agradeceria hagan sus aportes al codigo
+### explicando de forma clara cada linea a una rama aparte de con su identificación.
 
-# Juntos podemos romper el Sistema, ganemos todos!
+# Juntos podemos ganar!
