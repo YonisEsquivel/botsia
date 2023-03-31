@@ -121,7 +121,7 @@ def LoadDataTrading(n):
         symbol, side, quantity, price_side, id_orden_open, lastid = response_strategy
         print("quantity: " + str(quantity))
         res = cliente.create_order_limit(symbol, side, float(quantity), float(decimals_price.format(price_side)))
-        print("Compra ejecutada: esperemos 1 minuto...")
+        print("orden ejecutada: esperemos 1 minuto...")
         print(res)
         db = Conexion()
         cnx = db.mysqlConnect()

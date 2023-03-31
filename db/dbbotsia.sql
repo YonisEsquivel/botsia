@@ -93,32 +93,53 @@ INSERT INTO `settingsymbols` (`id`, `symbols`, `decimals`, `porcent_profit`, `pe
 CREATE TABLE IF NOT EXISTS `spot_entry_points` (
   `id` int NOT NULL AUTO_INCREMENT,
   `symbol` varchar(10) COLLATE armscii8_bin NOT NULL DEFAULT '0',
-  `price` float NOT NULL DEFAULT '0',
-  `emas` varchar(200) CHARACTER SET armscii8 COLLATE armscii8_bin NOT NULL DEFAULT '',
-  `smas` varchar(200) CHARACTER SET armscii8 COLLATE armscii8_bin NOT NULL DEFAULT '',
+  `price` varchar(50) COLLATE armscii8_bin NOT NULL DEFAULT '0',
+  `emas` varchar(200) CHARACTER SET armscii8 COLLATE armscii8_bin DEFAULT '',
+  `smas` varchar(200) CHARACTER SET armscii8 COLLATE armscii8_bin DEFAULT '',
   `action` char(5) COLLATE armscii8_bin NOT NULL DEFAULT '0',
-  `strategy` varchar(200) CHARACTER SET armscii8 COLLATE armscii8_bin NOT NULL DEFAULT '0',
+  `strategy` varchar(200) CHARACTER SET armscii8 COLLATE armscii8_bin DEFAULT '0',
   `porcent_low_over_sma` float NOT NULL DEFAULT '0',
   `date_time` datetime NOT NULL,
   `status` char(1) COLLATE armscii8_bin NOT NULL DEFAULT 'O',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=armscii8 COLLATE=armscii8_bin;
 
+-- La exportación de datos fue deseleccionada.
+
+-- Volcando estructura para tabla dbbotsia.spot_response_order
+CREATE TABLE IF NOT EXISTS `spot_response_order` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_entry_point` int DEFAULT '0',
+  `id_orden_open` int DEFAULT '0',
+  `response` text CHARACTER SET armscii8 COLLATE armscii8_bin NOT NULL,
+  `date_response` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=armscii8 COLLATE=armscii8_bin;
+
+-- La exportación de datos fue deseleccionada.
+
 -- Volcando estructura para tabla dbbotsia.spot_trading_open
 CREATE TABLE IF NOT EXISTS `spot_trading_open` (
   `orderId` int NOT NULL AUTO_INCREMENT,
-  `id_entry_point` int NOT NULL DEFAULT '0',
+  `id_entry_point_open` int NOT NULL DEFAULT '0',
+  `id_entry_point_close` int NOT NULL DEFAULT '0',
   `symbol` varchar(10) COLLATE armscii8_bin NOT NULL DEFAULT '0',
-  `open` float NOT NULL DEFAULT '0',
-  `close` float DEFAULT '0',
+  `open` varchar(50) COLLATE armscii8_bin NOT NULL DEFAULT '0',
+  `close` varchar(50) CHARACTER SET armscii8 COLLATE armscii8_bin DEFAULT '0',
   `usdt_open` float NOT NULL DEFAULT '0',
   `usdt_close` float DEFAULT '0',
-  `quantity` float NOT NULL DEFAULT '0',
+  `quantity` varchar(50) COLLATE armscii8_bin NOT NULL DEFAULT '0',
   `profit` float DEFAULT '0',
   `date_time_open` datetime NOT NULL,
   `date_time_close` datetime DEFAULT NULL,
-  PRIMARY KEY (`orderId`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=armscii8 COLLATE=armscii8_bin;
+  `status` char(1) COLLATE armscii8_bin NOT NULL DEFAULT 'O',
+  `comment` text COLLATE armscii8_bin,
+  PRIMARY KEY (`orderId`) USING BTREE,
+  KEY `id_entry_point_open` (`id_entry_point_open`),
+  KEY `id_entry_point_close` (`id_entry_point_close`)
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=armscii8 COLLATE=armscii8_bin;
+
+-- La exportación de datos fue deseleccionada.
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
